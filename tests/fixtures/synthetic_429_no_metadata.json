@@ -1,0 +1,11 @@
+{
+  "_source": "synthetic negative case -- a 429 with the free-access error code/type but no metadata object at all, so the override must decline (no reason to read). Not a captured wire response.",
+  "status": 429,
+  "body": {
+    "error": {
+      "code": "free_rate_limited",
+      "message": "Rate limit exceeded, please retry later. (request id: <redacted-request-id>)",
+      "type": "rate_limit_error"
+    }
+  }
+}

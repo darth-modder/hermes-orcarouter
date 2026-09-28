@@ -1,0 +1,16 @@
+{
+  "_source": "live capture, 2026-09-28",
+  "status": 429,
+  "body": {
+    "error": {
+      "code": "free_rate_limited",
+      "message": "Free models are not available to this account yet. They require the workspace owner to link a GitHub account that has been registered for some time — a newly created GitHub account does not qualify yet. Link an established GitHub account in your profile settings, or add credits to use paid access: https://www.orcarouter.ai/console/billing (request id: <redacted-request-id>)",
+      "metadata": {
+        "buy_credits_url": "https://www.orcarouter.ai/console/billing",
+        "reason": "err_free_access_denied",
+        "retryable": false
+      },
+      "type": "rate_limit_error"
+    }
+  }
+}

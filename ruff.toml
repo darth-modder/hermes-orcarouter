@@ -1,0 +1,23 @@
+# Mirrors hermes-agent core's [tool.ruff] / [tool.ruff.lint] selection
+# (pyproject.toml at the hermes-agent repo root) so this plugin is held to
+# the same lint bar core code is. See that file's comments for the full
+# rationale behind each rule; summarized here:
+#
+# - PLW1514 (unspecified-encoding): bare open()/read_text()/write_text() in
+#   text mode silently uses the system locale encoding on Windows.
+# - ASYNC210/220/221/251: blocking calls inside `async def` would freeze the
+#   whole gateway event loop. This plugin has no async code today, but the
+#   gate stays on so a future contribution can't introduce one silently.
+preview = true
+
+[lint]
+select = ["PLW1514", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC251", "TID251"]
+
+[lint.flake8-tidy-imports.banned-api]
+"os.environ".msg = "Use agent.secret_scope.get_secret; core wires ProviderProfile.env_vars"
+"os.getenv".msg = "Use agent.secret_scope.get_secret; core wires ProviderProfile.env_vars"
+
+[lint.per-file-ignores]
+# Tests may intentionally exercise locale-encoding edge cases, same
+# carve-out as hermes-agent core's own tests/**.
+"tests/**" = ["PLW1514", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC251", "TID251"]

@@ -1,0 +1,11 @@
+{
+  "_source": "live capture, 2026-09-28",
+  "status": 400,
+  "body": {
+    "error": {
+      "code": "",
+      "message": "model router 'this-model-does-not-exist-test-probe' not found (request id: <redacted-request-id>)",
+      "type": "orcarouter_api_error"
+    }
+  }
+}

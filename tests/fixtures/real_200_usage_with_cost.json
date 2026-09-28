@@ -1,0 +1,40 @@
+{
+  "_source": "live capture, 2026-09-28",
+  "status": 200,
+  "body": {
+    "id": "chatcmpl-<redacted>",
+    "object": "chat.completion",
+    "created": 0,
+    "model": "gpt-5.4-nano-2026-03-17",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Hi there!",
+          "refusal": null,
+          "annotations": []
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 13,
+      "completion_tokens": 6,
+      "total_tokens": 19,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "audio_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "audio_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      },
+      "cost_usd": 1e-05
+    },
+    "service_tier": "default",
+    "system_fingerprint": null
+  }
+}

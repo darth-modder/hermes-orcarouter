@@ -1,0 +1,12 @@
+{
+  "_source": "live capture, 2026-09-28 (openai/gpt-4.1-nano, request reasoning_effort=\"low\")",
+  "status": 400,
+  "body": {
+    "error": {
+      "message": "Unrecognized request argument supplied: reasoning_effort",
+      "type": "invalid_request_error",
+      "param": "",
+      "code": null
+    }
+  }
+}

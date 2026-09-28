@@ -1,0 +1,77 @@
+name: Nightly (Hermes main)
+
+# Tracks hermes-agent's `main` branch instead of the pinned release tag
+# ci.yml uses, so a breaking change on core's side is caught before it ships
+# in the next Hermes release rather than after. This is a separate,
+# non-required workflow: nothing gates a PR merge on it, so a red run here
+# does not block anything. It still runs as a real pass/fail job (no
+# continue-on-error) so GitHub's default behavior -- showing the failed run
+# in the Actions tab and emailing the repo owner -- actually fires; masking
+# the step result would suppress that notification.
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Same PYTHONPATH strategy as ci.yml -- see that file for why this is not
+  # `pip install -e ./hermes-agent`.
+  PYTHONPATH: ${{ github.workspace }}/hermes-agent
+
+jobs:
+  test:
+    name: test (python ${{ matrix.python-version }}, hermes-agent@main)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Check out hermes-agent @ main
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: NousResearch/hermes-agent
+          ref: main
+          fetch-depth: 0 # full tag history -- see ci.yml for why
+          path: hermes-agent
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install this plugin's dev/test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: Verify Hermes version resolution
+        # No expected version here -- main is a moving target. Only "not
+        # unknown" is asserted (see ci.yml for the full trap explanation).
+        run: python .github/scripts/verify_hermes_version.py
+
+      - name: ruff
+        # --exclude hermes-agent: see ci.yml for why (this checkout is a
+        # sibling directory inside the same workspace, not this plugin).
+        run: python -m ruff check . --config ruff.toml --exclude hermes-agent
+
+      - name: ty
+        run: python -m ty check --python "$pythonLocation" --extra-search-path ./hermes-agent --exclude hermes-agent
+
+      - name: pytest
+        env:
+          REQUIRE_HERMES: "1"
+          HERMES_AGENT_DIR: ./hermes-agent
+        run: python -m pytest -q
+
+      - name: hermes plugins validate (orcarouter)
+        run: python .github/scripts/validate_plugin.py orcarouter
+
+      - name: requires_hermes gate check
+        run: python .github/scripts/check_requires_hermes.py orcarouter/plugin.yaml

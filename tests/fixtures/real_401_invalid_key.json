@@ -1,0 +1,11 @@
+{
+  "_source": "live capture, 2026-09-28",
+  "status": 401,
+  "body": {
+    "error": {
+      "code": "",
+      "message": "Invalid API key (request id: <redacted-request-id>)",
+      "type": "orcarouter_api_error"
+    }
+  }
+}

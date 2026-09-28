@@ -1,0 +1,12 @@
+{
+  "_source": "live capture, 2026-09-28",
+  "status": 400,
+  "body": {
+    "error": {
+      "message": "The upstream provider rejected this request. Please check the request parameters and content. (request id: <redacted-request-id>)",
+      "type": "invalid_request_error",
+      "param": "",
+      "code": "upstream_rejected_request"
+    }
+  }
+}

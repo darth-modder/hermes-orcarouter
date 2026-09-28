@@ -1,0 +1,15 @@
+{
+  "_source": "synthetic negative case -- the real free-access-denied 429 body with metadata.reason changed to an unrelated value, so the override must NOT match and core's own classification takes over. Not a captured wire response.",
+  "status": 429,
+  "body": {
+    "error": {
+      "code": "free_rate_limited",
+      "message": "Rate limit exceeded, please retry later. (request id: <redacted-request-id>)",
+      "metadata": {
+        "reason": "actual_rate_limit",
+        "retryable": true
+      },
+      "type": "rate_limit_error"
+    }
+  }
+}

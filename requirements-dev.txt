@@ -1,0 +1,36 @@
+# Dev/test tooling for the orcarouter-provider plugin.
+# Floor + upper-bound pins per hermes-agent's Dependency Pinning Policy
+# (AGENTS.md): ">=floor,<next_major" for stable packages.
+#
+# hermes-agent itself is NOT listed here and is never pip-installed — set
+# HERMES_AGENT_DIR (or PYTHONPATH, in CI) to a hermes-agent checkout instead,
+# per conftest.py, so tests import `providers` and exercise real discovery
+# against a real checkout. A pip install would only expose the subset of
+# top-level packages hermes-agent's own build backend maps (its `pm/`
+# tooling directory, for one, is excluded from that mapping, and
+# hermes_cli.update_channel imports it at module load time) -- putting the
+# checkout directly on the path sidesteps that entirely.
+pytest>=8.0,<9
+ruff>=0.8,<0.13
+ty>=0.0.1,<0.1
+pyyaml>=6.0,<7
+
+# openai + httpx: needed only for tests/test_classify_api_error.py, which
+# builds classify_api_error test cases through the real openai SDK's own
+# exception-construction path instead of hand-built stand-ins. Floor
+# pinned to Hermes' own exact pin (openai==2.24.0, see hermes-agent's
+# pyproject.toml); upper bound is the next major/minor per this file's
+# floor+upper-bound convention.
+openai>=2.24,<3
+httpx>=0.28,<0.29
+
+# ruamel.yaml: a real hermes-agent runtime dependency (hermes_yaml.py wraps
+# it) pulled in transitively the moment any test imports hermes_cli or
+# providers -- e.g. hermes_cli.plugins_manifest -> utils -> hermes_yaml.
+# hermes-agent is never pip-installed here (see the note above), so none of
+# its own dependencies -- gated behind `python_version >= '3.14'` on current
+# main, ungated at the v0.21.5 release this repo's CI pins to -- are ever
+# resolved automatically; this repo lists the small subset it actually
+# imports explicitly instead. Floor pinned to Hermes' own exact pin
+# (ruamel.yaml==0.18.16 at v0.21.5).
+ruamel.yaml>=0.18.16,<0.19

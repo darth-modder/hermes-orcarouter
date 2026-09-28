@@ -1,0 +1,12 @@
+name: orcarouter-provider
+kind: model-provider
+version: 0.1.0
+manifest_version: 2
+description: OrcaRouter plugin for Hermes Agent
+author: "Ahmed Bilal (OrcaRouter)"
+requires_hermes: ">=0.21.5"
+requires_env:
+  - name: ORCAROUTER_API_KEY
+    description: "API key for OrcaRouter"
+    url: "https://docs.orcarouter.ai/getting-started/get-api-key"
+    secret: true
